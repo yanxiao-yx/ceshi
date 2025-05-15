@@ -11,7 +11,7 @@ jobs:
       - checkout
 
       - run:
-          name: Show Node & NPM Version
+          name: Check versions
           command: |
             node -v
             npm -v
