@@ -1,0 +1,36 @@
+{
+  "name": "my-vue3-project",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "import": "./cypress.config.mjs"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "cypress": "cypress run --headless",
+    "test": "start-server-and-test serve http://localhost:5173/ cypress"
+  },
+  "dependencies": {
+    "@tweenjs/tween.js": "^25.0.0",
+    "@vueuse/core": "^13.0.0",
+    "element-plus": "^2.9.7",
+    "sass-embedded": "^1.86.1",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.13.10",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vue/tsconfig": "^0.7.0",
+    "cypress": "^14.2.0",
+    "serve": "^14.2.4",
+    "start-server-and-test": "^2.0.11",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0",
+    "vue-tsc": "^2.2.4"
+  }
+}
