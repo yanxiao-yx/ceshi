@@ -3,43 +3,30 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/node:18.17
+      - image: cimg/node:18.17 # 使用官方推荐的 Node 镜像
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - 'SHA256:Zeu1j3junhdjmwvQIhIOZHj3BDTWRA6MyeXf63CaHyk'
       - checkout
 
       - run:
-          name: Check versions
+          name: Print Node/NPM/Yarn Versions
           command: |
             node -v
             npm -v
             yarn -v
 
-      - restore_cache:
-          keys:
-            - yarn-cache-{{ checksum "yarn.lock" }}
-            - yarn-cache-
-
       - run:
-          name: Install Dependencies
+          name: Install dependencies
           command: yarn install
 
-      - save_cache:
-          key: yarn-cache-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-
       - run:
-          name: Build Project
+          name: Build project
           command: yarn build
 
 workflows:
   version: 2
-  build_on_master:
+  build_and_test:
     jobs:
       - build:
           filters:
             branches:
-              only: master
+              only: main # ✅ 确保与你实际推送的分支一致（main 分支）
