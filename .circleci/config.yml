@@ -1,41 +1,8 @@
+version: 2
 jobs:
-	build:
-		docker:
-			#指定要使用的安装了Cypress的Docker镜像
-			- image:cypress/base:10
-			- image:circleci/node:10
-			environment:
-				# 配置输出时颜色区分
-				TERM:xterm
-		working_directory:~/app
-		#并行数目，此项的值决定了Circle CI为我们配置的客户机数量
-		parallelism:2
-		steps:
-			- checkout
-			- restore_cache:
-				keys:
-					- v2-deps-{{.Branch}}-{{checksum"package-lock.json"}}
-					- v2-deps-{{.Branch}}-
-					- v2-deps-
-			- run:npm ci
-			- save_cache:
-				key:v2-deps-{{.Branch}}-{{checksum"package-lock.json"}}
-				patchs:
-					- ~/.npm
-					- ~/.chche
-			#安装依赖包
-			- run:
-				name:install dependency
-				command:yarn
-			#运行测试，command里定义的命令，对应package.json里相应部分
-			- run:
-				name:Running e2e tests
-				command:yarn test
-			#测试结果
-			- store_test_results
-				path:junit-results
-			#保存视频和截图
-			- store_artifacts:
-				path:cypress/videos
-			- store_artifacts:
-				path:cypress/screenshots
+  build:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - run: echo "A first hello"
+      - run: npm -v
