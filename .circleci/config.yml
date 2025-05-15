@@ -1,19 +1,17 @@
 version: 2.1
 
-executors:
-  node-executor:
-    docker:
-      - image: cimg/node:18.17
-    working_directory: ~/project
-
 jobs:
   build_and_test:
-    executor: node-executor
+    docker:
+      - image: cimg/node:18.17
     steps:
       - checkout
       - run:
           name: 安装依赖
           command: npm install
+      - run:
+          name: 安装 Xvfb
+          command: sudo apt-get update && sudo apt-get install -y xvfb
       - run:
           name: 安装 Cypress
           command: npx cypress install
@@ -22,7 +20,7 @@ jobs:
           command: npm run build
       - run:
           name: 启动服务并执行 Cypress E2E 测试
-          command: npm run test:e2e
+          command: xvfb-run npm run test:e2e
 
 workflows:
   version: 2
