@@ -1,21 +1,45 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
     docker:
-      - image: circleci/node:10
-    branches:
-      only:
-        - master
+      - image: cimg/node:18.17
     steps:
       - add_ssh_keys:
           fingerprints:
             - 'SHA256:Zeu1j3junhdjmwvQIhIOZHj3BDTWRA6MyeXf63CaHyk'
       - checkout
-      - run: echo "A first hello"
-      - run: npm -v
+
       - run:
-          name: Install
+          name: Show Node & NPM Version
+          command: |
+            node -v
+            npm -v
+            yarn -v
+
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ checksum "yarn.lock" }}
+            - yarn-cache-
+
+      - run:
+          name: Install Dependencies
           command: yarn install
+
+      - save_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+
       - run:
-          name: Build
+          name: Build Project
           command: yarn build
+
+workflows:
+  version: 2
+  build_on_master:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
